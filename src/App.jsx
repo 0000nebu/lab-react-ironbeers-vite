@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import "./App.css";
 import Navbar from "./components/Navbar";
 import HomePage from "./pages/HomePage";
@@ -22,6 +22,7 @@ function App() {
         <Route path='/random-beer' element={<RandomBeerPage/>}/>
         <Route path='/new-beer' element={<AddBeerPage/>}/>
         <Route path='/beers/:id' element={<BeerDetailPage/>}/>
+        <Route path='*' element={<Navigate to="/"/>}/>
       </Routes>
 
     </div>

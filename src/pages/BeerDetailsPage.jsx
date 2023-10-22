@@ -17,6 +17,10 @@ function BeerDetailsPage() {
         })
     }, []);
 
+    if (data === null) {
+        return <div>Loading...</div>
+    }
+
     return <>
     <img src={data?.image_url} alt={data?.name} />
     <h3>beers {data?.name}</h3>

@@ -1,74 +1,79 @@
-import React from "react";
-import {useForm} from 'react-hook-form';
-import Imput from 'https://ih-beers-api2.herokuapp.com/beers/new'
-
- /*interface IFormInput {
-    name: string
-    tagline: string
-    description: string
-    first_brewed:string
-    brewers_tips: string
-    attenuation_level: number
-    contributed_by: string
-    
-  }*/
+import { useForm } from "react-hook-form";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
   
 
-function AddBeerPage({onCreate}) {
-    
-    const onSubmit = (beer) => {
-        console.log(beer);
-        onCreate(beer);
-        reset();
-    }
-    
 
-    const {register, handleSubmit, reset, formState: { errors, isValid }} = useForm({
-        mode: 'all',
-        defaultValues: {
-            name: ''
-        }
-    })
+function AddBeerPage() {
+  const { register, handleSubmit } = useForm();
+  const navigate = useNavigate();
+  const [error, setError] = useState(false);
 
-    
-  
-    return (
-/*<form onSubmit={handleSubmit(onSubmit)}>
-      <Controller
-        name="name"
-        control={control}
-        render={({ beers}) => <Input {...field} />}
-      />
-      <Controller
-        name="beers"
-        control={control}
-        render={({ field }) => (
-          <Select
-            {...field}
-            options={[
-              { value: "name", label: "name" },
-              { value: "strawberry", label: "Strawberry" },
-              { value: "vanilla", label: "Vanilla" },
-            ]}
-          />
-        )}
-      />
-      <input type="submit" />
-    </form> */
+  const [postId, SetPostId] = useState(null)
 
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <input type="string" placeholder="name "{...register("name", { required: true, message: 'name is required' })} />
-        <input type="string" placeholder="tagline"{...register("tagline")} />
-        <input type="string" placeholder="description"{...register("description")} />
-        <input type="string" placeholder="first brewed"{...register("first_brewed")} />
-        <input type="string" placeholder="brewers tips"{...register("brewers_tips")} />
-        <input type="number" placeholder=" attenuation_level"{...register(" attenuation_level")} />
-        <input type="string" placeholder="contributed_by"{...register("contributed_by")} />
+useEffect(() => {
+ 
+  const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ title: 'React Hooks POST Request Example' })
+  };
+  fetch('https://ih-beers-api2.herokuapp.com/beers/new', requestOptions)
+      .then(response => response.json())
+      .then(data => setPostId(data.id));
 
-        <input type="submit" disabled={!isValid} />
-        {errors.name && (<div className='invalid-feedback' >{errors.title.message}</div>)}
+
+}, []);
+
+
+  function createBeer(data) {
+    addBeer(data)
+      .then(() => {
+        navigate("/beers");
+      })
+      .catch(() => {
+        setError(true);
+      });
+  }
+
+  return (
+    <div>
+      {error && (
+        <div
+          className="alert alert-danger"
+          onClick={() => {
+            setError(false);
+          }}
+        >
+          Error, revise los datos del formulario
+        </div>
+      )}
+      <form onSubmit={handleSubmit(createBeer)}>
+        <div className="form-group mb-2">
+          <label htmlFor="name">Name</label>
+
+          <input className="form-control" {...register("name")} />
+        </div>
+
+        <div className="form-group mb-2">
+          <label htmlFor="tagline">Tagline</label>
+
+          <input className="form-control" {...register("tagline")} />
+        </div>
+
+        <div className="form-group mb-2">
+          <label htmlFor="tagline">Description</label>
+
+          <textarea className="form-control" {...register("description")} />
+        </div>
+
+        <button type="submit" className="btn btn-primary">
+          Submit
+        </button>
       </form>
-    )
+    </div>
+  );
 }
+
 
 export default AddBeerPage;

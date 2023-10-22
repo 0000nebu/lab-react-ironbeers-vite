@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import homeImage from '../assets/home-icon.png'
 
 
 
@@ -8,7 +9,7 @@ export default function Navbar() {
     <nav className="navbar bg-body-tertiary">
     <div className="container-fluid">
     <Link to={'/'}>
-        <img src="../assets/home-icon.png" alt="home-icon"></img>
+        <img src={homeImage} alt="home-icon"></img>
     </Link>
     </div>
   </nav>

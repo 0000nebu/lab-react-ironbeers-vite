@@ -17,7 +17,7 @@ function AllBeersPage() {
       <h1>Beers List</h1>
       <section className="row">
         {data.map((beer) => (
-          <div className="col-3 p-5" key={beer.id}>
+          <div className="col-3 p-5" key={beer._id}>
             <h3>
               <Link to={`/beers/${beer._id}`}>{beer.name}</Link>
             </h3>
